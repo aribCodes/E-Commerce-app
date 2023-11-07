@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+      }
+      body {
+        display: flex;
+      }
+      #container1 {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 3vh 3% 3vh 3%;
+        width: 70%;
+        height: 100vh;
+      }
+      #container2 {
+        width: 30%;
+        height: 100vh;
+      }
+      #nav_bar {
+        width: 100%;
+        margin-bottom: 4vh;
+        word-spacing: 20px;
+        font-size: larger;
+        font-weight: bold;
+      }
+      #nav_bar a {
+        margin: auto;
+        font-size: larger;
+        color: blue;
+      }
+      #product_node {
+        border: 1px solid black;
+        width: 30%;
+        height: 40vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+      }
+      #product_node #product_img_div {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        width: 92%;
+        height: 70%;
+      }
+      #product_node p {
+        margin: 5% 0 4% 0;
+      }
+      #product_node #add_item_btn {
+        width: 95%;
+        height: 13%;
+        font-weight: bold;
+      }
+      #table_container {
+        width: 100%;
+        text-align: center;
+        padding-top: 3vh;
+      }
+      #table_container table {
+        margin-top: 5vh;
+        width: 100%;
+        text-align: center;
+        padding-top: 1vh;
+        font-size: large;
+      }
+      #table_container table td {
+        background: white;
+      }
+      #table_container table th {
+        background: rgb(116, 188, 255);
+        color: white;
+      }
+    </style>
+  </head>
+  <body id="body">
+    <script>
+      var bodyElement = document.getElementById("body");
+
+      var container1 = document.createElement("div");
+      var container2 = document.createElement("div");
+      container1.setAttribute("id", "container1");
+      container2.setAttribute("id", "container2");
+
+      container1.style.background = "lightgreen";
+      container2.style.background = "lightblue";
+
+      bodyElement.appendChild(container1);
+      bodyElement.appendChild(container2);
+
+      // creating a nav bar
+      var navDiv = document.createElement("div");
+      navDiv.setAttribute("id", "nav_bar");
+      navDiv.innerHTML = "<a>Mobiles</a> <a>Clothes</a>";
+      container1.appendChild(navDiv);
+
+      // created an array to store anchors in the nav bar
+      var navBarAnchors = [];
+      // created an index counter to manage index to "navBarAnchors";
+      var j = 0;
+      // loop is implemented to remove text and consider elements as they have nodeType = 1 while text has nodeType = 3
+      for (let i = 0; i < navDiv.childNodes.length; i++) {
+        if (navDiv.childNodes[i].nodeType == 1) {
+          navBarAnchors[j] = navDiv.childNodes[i];
+          j++;
+        }
+      }
+
+      navBarAnchors[0].href = "index.html";
+      navBarAnchors[1].href = "#";
+
+      // console.log(navBarAnchors);
+
+      var products = [
+        {
+          img: "https://img.freepik.com/premium-photo/summer-collection-men-clothes-set-with-checkered-shirt-jeans-shoes-belt-isolated-white-background_142957-1103.jpg",
+          name: "ZARA",
+        },
+        {
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuierYRCYjHVzTJgnRR9tFff2UY9HBL2wy17tWF9n7WSMOzs2z9OYuLArvBbX_hHl84iU&usqp=CAU",
+          name: "JUNAID JAMSHED",
+        },
+        {
+          img: "https://5.imimg.com/data5/BQ/LX/MY-28214177/off-white-linen-kurta.jpg",
+          name: "KHAADI",
+        },
+        {
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuIsW8U-nc4Y3A_37VjanGHa47Z98ERNStFQ&usqp=CAU",
+          name: "OUTFITTERS",
+        },
+        {
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzoozttK8s-4teUkTHHbCfu9wdnnAbcy3Rsg&usqp=CAU",
+          name: "BONANZA",
+        },
+        {
+          img: "https://images.meesho.com/images/products/168144577/5fv8w_512.webp",
+          name: "GUL AHMED",
+        },
+      ];
+
+      // creating an array to store cart items
+      var cartItems = [];
+
+      // creating a variable "count" to count the already existed items in a cart
+      var count = 1;
+
+      for (let i = 0; i < products.length; i++) {
+        // it is the node for product information
+        var productNode = document.createElement("div");
+        productNode.setAttribute("id", "product_node");
+
+        // it is the image div which will contain a image in it
+        var productImageNode = document.createElement("div");
+        productImageNode.setAttribute("id", "product_img_div");
+        productImageNode.style.backgroundImage = `url(${products[i].img})`;
+
+        // it is the paragraph in which product name will be displayed
+        var para = document.createElement("p");
+        para.innerText = products[i].name;
+
+        // creating add to cart button
+        var button = document.createElement("button");
+        button.setAttribute("id", "add_item_btn");
+        button.setAttribute("value", i);
+        button.setAttribute("onclick", `addItem(${i})`);
+        button.innerText = "ADD TO CART";
+
+        // appending product image and product name
+        productNode.appendChild(productImageNode);
+        productNode.appendChild(para);
+        productNode.appendChild(button);
+        container1.appendChild(productNode);
+      }
+
+      // creating container div for table
+      var tableContainer = document.createElement("div");
+      tableContainer.setAttribute("id", "table_container");
+
+      // creating heading of Cart items
+      var heading = document.createElement("h2");
+      heading.innerText = "CART ITEMS";
+
+      // creating table
+      var table = document.createElement("table");
+      table.setAttribute("id", "items_table");
+
+      // creating row and 3 headings of the table
+      var tableRow = document.createElement("tr");
+      var tableHeading1 = document.createElement("th");
+      tableHeading1.innerText = "ID";
+      var tableHeading2 = document.createElement("th");
+      tableHeading2.innerText = "IMAGE";
+      var tableHeading3 = document.createElement("th");
+      tableHeading3.innerText = "NAME";
+      var tableHeading4 = document.createElement("th");
+      tableHeading4.innerText = "QUANTITY";
+
+      // appending headings, table and container div of table in "container 2"
+      tableRow.appendChild(tableHeading1);
+      tableRow.appendChild(tableHeading2);
+      tableRow.appendChild(tableHeading3);
+      tableRow.appendChild(tableHeading4);
+      table.appendChild(tableRow);
+      tableContainer.appendChild(heading);
+      tableContainer.appendChild(table);
+      container2.appendChild(tableContainer);
+
+      displayCart();
+
+      function addItem(index) {
+        location.reload();
+        var getItems = JSON.parse(localStorage.getItem("category2"));
+
+        var productDetail = {
+          id: index,
+          name: products[index].name,
+          image: products[index].img,
+          quant: count,
+        };
+        if (localStorage.getItem("category2") == undefined) {
+          cartItems.push(productDetail);
+          localStorage.setItem("category2", JSON.stringify(cartItems));
+
+          displayCart();
+        } else {
+          var check;
+          getItems.forEach((element) => {
+            if (element.id == index) {
+              element.quant = element.quant + 1;
+              localStorage.setItem("category2", JSON.stringify(getItems));
+              check = element;
+            }
+          });
+          if (check == undefined) {
+            getItems.push(productDetail);
+            localStorage.setItem("category2", JSON.stringify(getItems));
+            displayCart();
+          }
+        }
+      }
+
+      function displayCart() {
+        var getItems = JSON.parse(localStorage.getItem("category2"));
+        for (let index = 0; index < getItems.length; index++) {
+          // creating row and 3 table data's of the table
+          var tableRow = document.createElement("tr");
+          var tableData1 = document.createElement("td");
+          var tableData2 = document.createElement("td");
+          var tableData3 = document.createElement("td");
+          var tableData4 = document.createElement("td");
+
+          // assigning values to all of the 3 table data's
+          tableData1.innerText = getItems[index].id;
+          tableData2.style.backgroundImage = `url(${getItems[index].image})`;
+          tableData2.style.backgroundPosition = "center";
+          tableData2.style.backgroundRepeat = "no-repeat";
+          tableData2.style.backgroundSize = "contain";
+          tableData3.innerText = getItems[index].name;
+          tableData4.innerText = getItems[index].quant;
+
+          tableRow.appendChild(tableData1);
+          tableRow.appendChild(tableData2);
+          tableRow.appendChild(tableData3);
+          tableRow.appendChild(tableData4);
+          table.appendChild(tableRow);
+        }
+      }
+    </script>
+  </body>
+</html>
